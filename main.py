@@ -56,12 +56,6 @@ THEMES = {
     }
 }
 
-import os
-import json
-import getpass
-import sys
-import time
-
 CONFIG_FILE = os.path.expanduser("~/.NSTX_config.json")
 AI_URL = "https://openrouter.ai/api/v1/chat/completions"
 
@@ -79,6 +73,7 @@ ASCII_BANNER = r"""
 
 TAGLINE = "This app was created by Tarik ."
 
+
 def typewriter(text: str, delay: float = 0.015):
     for char in text:
         sys.stdout.write(char)
@@ -93,48 +88,53 @@ def print_banner():
     print()
 
 
+def save_api_key(api_key: str):
+    data = {"api_key": api_key}
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+        check = json.load(f)
+    if check.get("api_key") != api_key:
+        raise RuntimeError("Config verification failed — key was not saved correctly.")
+
+
+def load_api_key() -> str | None:
+    if not os.path.exists(CONFIG_FILE):
+        return None
+    try:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        key = data.get("api_key", "").strip()
+        return key if key else None
+    except (json.JSONDecodeError, IOError):
+        return None
+
+
 def get_api_key() -> str:
-    # 1. Try to load from config file
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, "r") as f:
-                config = json.load(f)
-            api_key = config.get("api_key", "").strip()
-            if api_key:
-                return api_key
-        except (json.JSONDecodeError, IOError):
-            pass
+    key = load_api_key()
+    if key:
+        return key
 
-    # 2. Prompt the user
-    print("No API key found in config. go to this web site and create api key \n https://openrouter.ai/api")
-    api_key = getpass.getpass("Enter your OpenRouter API key: ").strip()
+    print("No API key found.")
+    print("Create a free key at: https://openrouter.ai/settings/keys\n")
+    while True:
+        api_key = getpass.getpass("Enter your OpenRouter API key: ").strip()
+        if api_key:
+            break
+        print("Key cannot be empty, please try again.")
 
-    if not api_key:
-        raise ValueError("API key cannot be empty.")
-
-    # 3. Save for next time
-    config = {}
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, "r") as f:
-                config = json.load(f)
-        except (json.JSONDecodeError, IOError):
-            pass
-
-    config["api_key"] = api_key
-    os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
-    with open(CONFIG_FILE, "w") as f:
-        json.dump(config, f, indent=2)
-    print(f"API key saved to {CONFIG_FILE}")
-
+    save_api_key(api_key)
+    print(f"Key saved to {CONFIG_FILE}")
     return api_key
+print_banner()
+API_KEY = get_api_key()
 
 
 if __name__ == "__main__":
-    print_banner()
-    API_KEY = get_api_key()
-
-# or silently continues if key already exists in ~/.NSTX_config.json
+    print("Starting ...")
 
 def resource_path(relative_path):
     try:
