@@ -14,37 +14,50 @@ this app can help for automate configuration, manage devices, and troubleshoot i
 ## Getting Started
 ***
 ## HOW TO USE
-***DEVICE*** To add a device, click Add Device or press Ctrl + N.
+***DEVICE***
+>To add a device, click Add Device or press Ctrl + N.
 Make sure to select the correct device type before saving.
-<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/48961d69-2810-4a97-bf91-2d9780dca602" />
-***duplicate** You can select multiple devices to send commands at once.
+
+<img width="1920" height="1080" alt="3" src="https://github.com/user-
+attachments/assets/48961d69-2810-4a97-bf91-2d9780dca602" />
+***duplicate** 
+>You can select multiple devices to send commands at once.
 Press Ctrl + A to select all devices
 Hold Ctrl to select or deselect specific devices
 Once selected, you can run one command on all devices and view the results together.
+
 <img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/3cb39544-0801-447f-8327-f28f5b6ebc25" />
+
 ***console mode**
-The input area will expand so you can write your configuration.
-Press Ctrl + Shift to send the command.
+>the input area is in exec mode by default. To expand it and enter configuration, switch to global configuration mode.
+Press **Ctrl + Shift** to send the command.
+
+
 <img width="1920" height="1080" alt="5" src="https://github.com/user-attachments/assets/df08ecf0-7947-4186-b560-3543f536c68f" />
+
 ***chat bot** 
-Click the chatbot icon to open it.
+>Click the chatbot icon to open it.
 Ask questions or request commands
 The chatbot will generate a response
 You can add the result to a task if needed
+
 <img width="1920" height="1080" alt="7" src="https://github.com/user-attachments/assets/3a27930a-6630-494c-a749-998e230bfec8" />
+
 ***config sharing**
-Go to Tools → Config Sharing.
+>Go to Tools → Config Sharing.
 Pull configuration from a device
 Edit it (e.g., change IP address)
 Push it back to a device
+
 <img width="1920" height="1080" alt="8" src="https://github.com/user-attachments/assets/dfa07b70-1129-4ac4-89c6-db34ec01f1b2" />
+
 ***autopilot** 
-Autopilot lets you automate tasks using prompts.
+>Autopilot lets you automate tasks using prompts.
 Use one or multiple prompts
 Apply configurations or fix issues
 Customize it based on your needs
 Your imagination is the limit.
----
+
 ![NSTXautopilot](https://github.com/user-attachments/assets/891aeef2-f00e-4bec-a405-4d0d04d5a120)
 ### compile
 > I will compile it soon for both Linux and Windows.
@@ -73,6 +86,6 @@ python -m PyInstaller \
 Output:
 ```
 dist/
- └── NSTX.exe
+ └── NSTX
 ```
 ---
