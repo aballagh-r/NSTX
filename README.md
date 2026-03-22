@@ -19,9 +19,8 @@
 ## Overview
 **NSTX**
 <img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/779296ce-7cc7-43e0-999f-7e8850df9699" />
-if you want to change white/dark mode > go to tools > change theme
 automate configuration, manage devices, and troubleshoot issues across network devices and endpoints. It uses SSH to securely connect to devices and supports multiple vendors .
->this link for both linux and windows compiled file:
+>if you want to change white/dark mode > go to tools > change theme
 
 ## Getting Started
 ***
@@ -40,8 +39,10 @@ just click on the icon, it will expand and you can ask the model any question, a
 click on config sharing in tools, you can pull config from a device and push it after editing anything you want like the IP or anything else
 <img width="1920" height="1080" alt="8" src="https://github.com/user-attachments/assets/dfa07b70-1129-4ac4-89c6-db34ec01f1b2" />
 ***autopilot** on this you can just use one prompt or any prompts you want for solving problems, configuration, or anything you need, your imagination is the limit
+---
 ![NSTXautopilot](https://github.com/user-attachments/assets/891aeef2-f00e-4bec-a405-4d0d04d5a120)
-
+### compile
+> I will compile it soon for both Linux and Windows.
 ### Installation
 ```bash
 # Clone the repository
