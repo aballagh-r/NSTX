@@ -18,8 +18,7 @@ this app can help for automate configuration, manage devices, and troubleshoot i
 >To add a device, click Add Device or press Ctrl + N.
 Make sure to select the correct device type before saving.
 
-<img width="1920" height="1080" alt="3" src="https://github.com/user-
-attachments/assets/48961d69-2810-4a97-bf91-2d9780dca602" />
+<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/ea332593-5d51-45a3-80f9-1469871bbbb6" />
 
 ***duplicate** 
 >You can select multiple devices to send commands at once.
