@@ -20,6 +20,7 @@ Make sure to select the correct device type before saving.
 
 <img width="1920" height="1080" alt="3" src="https://github.com/user-
 attachments/assets/48961d69-2810-4a97-bf91-2d9780dca602" />
+
 ***duplicate** 
 >You can select multiple devices to send commands at once.
 Press Ctrl + A to select all devices
