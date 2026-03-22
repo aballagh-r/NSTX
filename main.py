@@ -31,7 +31,7 @@ Tasks = {}
 quick_commands = []      
 selected_indexes = set() 
 device_sessions = {}     
-current_theme = "dark"
+current_theme = "light"
 
 THEMES = {
     "dark": {
