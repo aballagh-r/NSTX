@@ -1,16 +1,6 @@
 # NSTX 
 ```
-      ___           ___           ___           ___     
-     /\__\         /\  \         /\  \         |\__\    
-    /::|  |       /::\  \        \:\  \        |:|  |   
-   /:|:|  |      /:/\ \  \        \:\  \       |:|  |   
-  /:/|:|  |__   _\:\~\ \  \       /::\  \      |:|__|__ 
- /:/ |:| /\__\ /\ \:\ \ \__\     /:/\:\__\ ____/::::\__\
- \/__|:|/:/  / \:\ \:\ \/__/    /:/  \/__/ \::::/~~/~   
-     |:/:/  /   \:\ \:\__\     /:/  /       ~~|:|~~|    
-     |::/  /     \:\/:/  /     \/__/          |:|  |    
-     /:/  /       \::/  /                     |:|  |    
-     \/__/         \/__/                       \|__|   
+<img width="4096" height="4096" alt="logo" src="https://github.com/user-attachments/assets/f304521a-8452-4cb0-9e98-92d6a5de6840" />
 ```
 > **vibe netwroking with endpoint and and netwrok device **
 ![Python](https://img.shields.io/badge/Python-3.11+-FFD43B?style=flat-square&logo=python&logoColor=black)
