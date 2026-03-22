@@ -1,5 +1,5 @@
 # NSTX 
-<img width="4096" height="4096" alt="logo" src="https://github.com/user-attachments/assets/f304521a-8452-4cb0-9e98-92d6a5de6840" />
+<img src="https://github.com/user-attachments/assets/f304521a-8452-4cb0-9e98-92d6a5de6840" width="150" alt="logo" />
 > **vibe netwroking with endpoint and and netwrok device **
 ![Python](https://img.shields.io/badge/Python-3.11+-FFD43B?style=flat-square&logo=python&logoColor=black)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?style=flat-square)
