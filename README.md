@@ -19,13 +19,28 @@
 ## Overview
 **NSTX**
 <img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/779296ce-7cc7-43e0-999f-7e8850df9699" />
- 
+if you want to change white/dark mode > go to tools > change theme
 automate configuration, manage devices, and troubleshoot issues across network devices and endpoints. It uses SSH to securely connect to devices and supports multiple vendors .
->this link for both linux and windows compiled file
+>this link for both linux and windows compiled file:
 
 ## Getting Started
-****
-**HOW TO USE ** first add the device by add device 
+***
+## HOW TO USE
+***first add the device*** you can add a device by clicking add device or using ctrl+N as a shortcut, and it is important to select the type of the device
+<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/48961d69-2810-4a97-bf91-2d9780dca602" />
+***duplicate** just select the device (use ctrl + A for all, deselect by holding ctrl), now you can send one command to multiple devices and return the output like this
+<img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/3cb39544-0801-447f-8327-f28f5b6ebc25" />
+***console mode**
+for console mode, it is important to specify conf t or configure terminal, the input will expand and you can add your configuration, and by ctrl + shift you can send it
+<img width="1920" height="1080" alt="5" src="https://github.com/user-attachments/assets/df08ecf0-7947-4186-b560-3543f536c68f" />
+***chat bot** 
+just click on the icon, it will expand and you can ask the model any question, and the command will respond, if you want you can add it to a task
+<img width="1920" height="1080" alt="7" src="https://github.com/user-attachments/assets/3a27930a-6630-494c-a749-998e230bfec8" />
+***config sharing**
+click on config sharing in tools, you can pull config from a device and push it after editing anything you want like the IP or anything else
+<img width="1920" height="1080" alt="8" src="https://github.com/user-attachments/assets/dfa07b70-1129-4ac4-89c6-db34ec01f1b2" />
+***autopilot** on this you can just use one prompt or any prompts you want for solving problems, configuration, or anything you need, your imagination is the limit
+![NSTXautopilot](https://github.com/user-attachments/assets/891aeef2-f00e-4bec-a405-4d0d04d5a120)
 
 ### Installation
 ```bash
