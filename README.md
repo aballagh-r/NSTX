@@ -14,20 +14,36 @@ this app can help for automate configuration, manage devices, and troubleshoot i
 ## Getting Started
 ***
 ## HOW TO USE
-***first add the device*** you can add a device by clicking add device or using ctrl+N as a shortcut, and it is important to select the type of the device
+***DEVICE*** To add a device, click Add Device or press Ctrl + N.
+Make sure to select the correct device type before saving.
 <img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/48961d69-2810-4a97-bf91-2d9780dca602" />
-***duplicate** just select the device (use ctrl + A for all, deselect by holding ctrl), now you can send one command to multiple devices and return the output like this
+***duplicate** You can select multiple devices to send commands at once.
+Press Ctrl + A to select all devices
+Hold Ctrl to select or deselect specific devices
+Once selected, you can run one command on all devices and view the results together.
 <img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/3cb39544-0801-447f-8327-f28f5b6ebc25" />
 ***console mode**
-for console mode, it is important to specify conf t or configure terminal, the input will expand and you can add your configuration, and by ctrl + shift you can send it
+The input area will expand so you can write your configuration.
+Press Ctrl + Shift to send the command.
 <img width="1920" height="1080" alt="5" src="https://github.com/user-attachments/assets/df08ecf0-7947-4186-b560-3543f536c68f" />
 ***chat bot** 
-just click on the icon, it will expand and you can ask the model any question, and the command will respond, if you want you can add it to a task
+Click the chatbot icon to open it.
+Ask questions or request commands
+The chatbot will generate a response
+You can add the result to a task if needed
 <img width="1920" height="1080" alt="7" src="https://github.com/user-attachments/assets/3a27930a-6630-494c-a749-998e230bfec8" />
 ***config sharing**
-click on config sharing in tools, you can pull config from a device and push it after editing anything you want like the IP or anything else
+Go to Tools → Config Sharing.
+Pull configuration from a device
+Edit it (e.g., change IP address)
+Push it back to a device
 <img width="1920" height="1080" alt="8" src="https://github.com/user-attachments/assets/dfa07b70-1129-4ac4-89c6-db34ec01f1b2" />
-***autopilot** on this you can just use one prompt or any prompts you want for solving problems, configuration, or anything you need, your imagination is the limit
+***autopilot** 
+Autopilot lets you automate tasks using prompts.
+Use one or multiple prompts
+Apply configurations or fix issues
+Customize it based on your needs
+Your imagination is the limit.
 ---
 ![NSTXautopilot](https://github.com/user-attachments/assets/891aeef2-f00e-4bec-a405-4d0d04d5a120)
 ### compile
