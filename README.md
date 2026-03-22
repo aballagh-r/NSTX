@@ -7,8 +7,8 @@
 ---
 ## Overview
 **NSTX**
+this app can help for automate configuration, manage devices, and troubleshoot issues across network devices and endpoints. It uses SSH to securely connect to devices and supports multiple vendors .
 <img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/779296ce-7cc7-43e0-999f-7e8850df9699" />
-automate configuration, manage devices, and troubleshoot issues across network devices and endpoints. It uses SSH to securely connect to devices and supports multiple vendors .
 >if you want to change white/dark mode > go to tools > change theme
 
 ## Getting Started
