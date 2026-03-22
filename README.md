@@ -17,13 +17,16 @@
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?style=flat-square)
 ---
 ## Overview
-**NSTX** 
+**NSTX**
+<img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/779296ce-7cc7-43e0-999f-7e8850df9699" />
+ 
 automate configuration, manage devices, and troubleshoot issues across network devices and endpoints. It uses SSH to securely connect to devices and supports multiple vendors .
 >this link for both linux and windows compiled file
 
 ## Getting Started
 ****
 **HOW TO USE ** first add the device by add device 
+
 ### Installation
 ```bash
 # Clone the repository
