@@ -29,7 +29,7 @@ Once selected, you can run one command on all devices and view the results toget
 <img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/3cb39544-0801-447f-8327-f28f5b6ebc25" />
 
 ***console mode**
->the input area is in exec mode by default. To expand it and enter configuration, switch to global configuration mode.
+>the input area is in exec mode by default. To expand it and enter configuration T | conf t | configure terminal , switch to global configuration mode.
 Press **Ctrl + Shift** to send the command.
 
 
@@ -64,7 +64,7 @@ Your imagination is the limit.
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/NSTX.git
+git clone https://github.com/aballagh-r/NSTX.git
 cd NSTX
 # Install dependencies
 pip install -r requirements.txt
