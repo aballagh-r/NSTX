@@ -179,15 +179,11 @@ TOOL FORMATS:
 # ═══════════════════════════════════════════════════════════════════════════════
 #  SSH HELPERS
 # ═══════════════════════════════════════════════════════════════════════════════
-
-# Commands that must NEVER be sent via send_command (they enter config mode
-# or are interactive — Netmiko will hang waiting for a prompt that never comes)
 _CONFIG_MODE_COMMANDS = {
     "configure terminal", "configure", "conf t", "conf terminal",
     "end", "exit", "quit",
 }
 
-# Prefixes that indicate a config-mode command (not a show/read command)
 _CONFIG_PREFIXES = (
     "interface ", "int ", "ip address ", "ip route ", "ip nat ",
     "no ip ", "no interface", "encapsulation ", "router ",
