@@ -1,5 +1,5 @@
 from __future__ import annotations
-import re, json, time, requests
+import re, json, time, requests, subprocess, platform
 from datetime import datetime
 from typing import Optional
 
@@ -85,30 +85,13 @@ MONO = "'Cascadia Code', 'Cascadia Mono', 'Consolas', 'Lucida Console', monospac
 #  MODEL AUTO-SELECTION
 # ═══════════════════════════════════════════════════════════════════════════════
 _FALLBACK_CHAIN = [
-    "deepseek/deepseek-chat",
-    "deepseek/deepseek-r1",
-    "openai/gpt-4o-mini",
-    "google/gemini-flash-2.0",
-    "meta-llama/llama-3.3-70b-instruct",
-    "mistral/mistral-small",
-    "qwen/qwen-2.5-72b-instruct",
-    "meta-llama/llama-3.1-8b-instruct:free",
+    "stepfun/step-3.5-flash:free",
+    "openrouter/free",
 ]
 
 _MODEL_SCORES = {
-    "deepseek/deepseek-chat":                   100,
-    "deepseek/deepseek-r1":                      90,
-    "anthropic/claude-sonnet-4":                 88,
-    "anthropic/claude-sonnet-4-5":               88,
-    "openai/gpt-4o":                             85,
-    "google/gemini-pro-2.0":                     82,
-    "anthropic/claude-haiku-3-5":                80,
-    "google/gemini-flash-2.0":                   78,
-    "openai/gpt-4o-mini":                        75,
-    "meta-llama/llama-3.3-70b-instruct":         70,
-    "mistral/mistral-small":                     68,
-    "qwen/qwen-2.5-72b-instruct":                65,
-    "meta-llama/llama-3.1-8b-instruct:free":     40,
+    "stepfun/step-3.5-flash:free":         100,
+    "openrouter/free":                      90,
 }
 
 _MAX_COST_PER_1M = 5.0
@@ -170,76 +153,27 @@ class ModelSelector(QThread):
 #  AGENT SYSTEM PROMPT
 # ═══════════════════════════════════════════════════════════════════════════════
 AGENT_SYSTEM = """\
-You are NSTX Autopilot — an expert network engineer AI assistant embedded in a
-multi-vendor SSH terminal. You have deep knowledge of ALL vendors and platforms.
+You are NSTX Autopilot — an advanced AI network engineer.
+You have DIRECT SSH ACCESS to the devices listed in the context.
+Your goal is to complete the user's request using the available tools.
 
-════════════════════════════════════════
-CRITICAL BEHAVIOUR RULES
-════════════════════════════════════════
+TOOLS AVAILABLE:
+1. [READ]  `run_commands`: Run non-interactive show/display/exec commands.
+2. [WRITE] `apply_fix`:    Run configuration changes or installation commands.
+3. [REPORT] `summarise`:   End the session with a final report.
 
-1. ONLY RUN COMMANDS WHEN THE USER EXPLICITLY ASKS.
-   - If the user says "hi", "hello", "how are you", or makes small talk →
-     respond naturally in plain text. DO NOT call any tools.
-   - If the user asks a general question → answer it. DO NOT run commands.
-   - Only call tools when the user explicitly asks to check, analyse, fix,
-     show, or investigate something on a device.
+GUIDELINES:
+- **Adaptability**: You are working with a variety of vendors (Cisco, Linux, Juniper, etc.). Check the device details in the context and use the correct syntax for that specific OS.
+- **Action**: Do not just explain. Use tools to AUDIT state, APPLY changes, and VERIFY results.
+- **Syntax**:
+  - For Network devices (Cisco/Juniper/etc): `apply_fix` handles configuration mode automatically. Do NOT include 'configure terminal' or 'end'.
+  - For Linux: `apply_fix` runs shell commands as root. Use non-interactive flags (e.g., -y).
+- **Format**: Output MUST be strictly valid JSON inside <TOOL> tags.
 
-2. NEVER ASSUME A VENDOR.
-   - Always check the device list below for device_type before choosing commands.
-   - Use the correct CLI syntax for each device's vendor.
-   - NEVER default to Cisco commands unless the device is actually Cisco.
-
-3. VENDOR-AWARE COMMANDS (use ONLY matching vendor commands):
-   Cisco IOS/XE:  show running-config | show ip int brief | show version | show logging
-   Cisco NX-OS:   show running-config | show interface brief | show version | show log last 50
-   Cisco IOS-XR:  show running-config | show interfaces brief | show version | show log
-   Cisco ASA:     show running-config | show interface | show version | show log | show conn
-   Juniper JunOS: show configuration | show interfaces terse | show version | show log messages
-   Linux/Ubuntu:  ip addr | ip route | ss -tulnp | iptables -L -n -v | journalctl -n 50
-   FortiGate:     get system interface | get router info routing-table all | diagnose sys top
-   Palo Alto:     show interface all | show routing route | show system info
-   HP/Aruba:      show interfaces | show ip | show version | show log
-   Huawei:        display interface brief | display ip routing-table | display version
-   Dell OS10:     show ip interface brief | show ip route | show version | show running-config
-   Alcatel AOS:   show ip interface | show ip route | show system | show configuration snapshot
-   Generic SSH:   try common show/display commands based on context clues
-
-4. MULTI-DEVICE AWARENESS:
-   - When asked about "all devices" or "all routers", run commands on ALL devices.
-   - Each device may be a different vendor — use the right commands per device.
-   - Always label output per device clearly.
-
-5. TOOL FORMAT — JSON must be INSIDE the tags, no exceptions:
-   CORRECT:  <TOOL>{"tool":"run_commands","device":"router-1","commands":["show version"]}</TOOL>
-   WRONG:    <TOOL>run_commands</TOOL>  {"tool": ...}
-
-6. AVAILABLE TOOLS:
-
-   run_commands  — for READ-ONLY show/display commands ONLY:
-     <TOOL>{"tool":"run_commands","device":"<hostname|IP|all>","commands":["show cmd1","show cmd2"]}</TOOL>
-
-   apply_fix  — for ANY configuration changes (safe/low risk only; high/destructive is blocked):
-     DO NOT include "configure terminal" or "end" — they are added automatically.
-     <TOOL>{"tool":"apply_fix","device":"<hostname|IP>","commands":["interface X","ip address Y Z"],"risk":"safe|low|medium|high","reason":"why"}</TOOL>
-
-   summarise  — ALWAYS call at the end of every analysis:
-     <TOOL>{"tool":"summarise","severity":"critical|high|medium|low|healthy","diagnosis":"plain English","root_cause":"technical","fix_applied":false,"learning_note":"one key takeaway","confidence":85}</TOOL>
-
-7. IMPORTANT — CONFIG vs SHOW:
-   - Use run_commands ONLY for show/display/get/print (read-only) commands.
-   - Use apply_fix for ALL configuration changes, even "safe" ones like adding an IP.
-   - NEVER send "configure terminal", "conf t", or "end" in any tool call — they are handled automatically.
-
-8. RED FLAGS to always hunt for:
-   - Interfaces admin-down with no clear reason
-   - DHCP on WAN interfaces (fragile in production)
-   - Missing default routes | enable password instead of secret
-   - ACLs defined but not applied anywhere
-   - NTP not configured (timestamps useless without it)
-   - Linux: unexpected services on 0.0.0.0, overly permissive iptables
-
-9. Always end an analysis session with a summarise tool call.
-   Never suggest reload, erase startup-config, or factory-reset.
+TOOL FORMATS:
+<TOOL>{"tool": "run_commands", "device": "<name|IP>", "commands": ["show ver"]}</TOOL>
+<TOOL>{"tool": "apply_fix", "device": "<name|IP>", "commands": ["cmd1", "cmd2"], "risk": "low", "reason": "fixing issue"}</TOOL>
+<TOOL>{"tool": "summarise", "severity": "healthy|low|medium|high|critical", "diagnosis": "Final conclusion.", "fix_applied": true}</TOOL>
 """
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -391,7 +325,13 @@ def _ssh_run_linux(device: dict, commands: list[str], status_cb=None) -> str:
             client.connect(**kw)
             device_sessions[skey] = client
         except Exception as e:
-            return f"[SSH CONNECT FAILED] {e}"
+            # Diagnostic ping to help the Agent understand why it failed
+            ping_res = "unreachable"
+            try:
+                param = "-n" if platform.system().lower() == "windows" else "-c"
+                if subprocess.run(["ping", param, "1", host], capture_output=True, timeout=2).returncode == 0: ping_res = "reachable (alive)"
+            except: pass
+            return f"[SSH CONNECT FAILED] Host {host} is {ping_res} via ICMP, but SSH connection failed. Error: {e}"
 
     parts = []
     for cmd in commands:
@@ -474,6 +414,8 @@ class AgentWorker(QThread):
         self.api_key        = api_key
         self.ai_url         = ai_url
         self.model_chain    = model_chain
+        # Sanitize URL to prevent 405 Method Not Allowed on some endpoints
+        if self.ai_url.endswith("/"): self.ai_url = self.ai_url[:-1]
         self._stop          = False
 
     def stop(self): self._stop = True
@@ -521,14 +463,14 @@ class AgentWorker(QThread):
                 return  # success
             except requests.HTTPError as e:
                 code = e.response.status_code if e.response is not None else 0
-                if code in (402, 429, 503, 529):
-                    continue  # silent fallback
-                else:
-                    yield f"\n[ERROR {code}] {e}\n"
+                # Fallback on most errors to keep the loop alive (vibe coding style)
+                # Only stop on explicit Auth failures
+                if code in (401, 403):
+                    yield f"\n[AUTH ERROR {code}] Check API Key.\n"
                     return
+                continue # Try next model
             except Exception as e:
-                yield f"\n[STREAM ERROR] {e}\n"
-                return
+                continue # Try next model
         yield "\n[All models unavailable — check your API key and OpenRouter balance.]\n"
 
     def _execute_tool(self, call: dict) -> str:
@@ -650,17 +592,24 @@ class AgentWorker(QThread):
             except Exception:
                 pass
 
-        for m in re.finditer(r"<TOOL>\s*(\w+)\s*</TOOL>\s*\n?\s*(\{.*?\})", text, re.DOTALL):
-            if overlaps(m.start(), m.end()):
-                continue
+        # 2. XML-style <tool_call> fallback (for models that hallucinate this format)
+        # <tool_call> <function=NAME> <parameter=KEY> VALUE </parameter> </function> </tool_call>
+        for m in re.finditer(r"<tool_call>\s*<function=(?P<name>\w+)>(?P<body>.*?)</function>\s*</tool_call>", text, re.DOTALL):
+            if overlaps(m.start(), m.end()): continue
             try:
-                obj = json.loads(m.group(2).strip())
-                if "tool" not in obj:
-                    obj["tool"] = m.group(1).strip()
-                out.append((m.start(), m.end(), obj))
+                tool_name = m.group("name")
+                body = m.group("body")
+                params = {}
+                for pm in re.finditer(r"<parameter=(?P<key>\w+)>(?P<val>.*?)</parameter>", body, re.DOTALL):
+                    key = pm.group("key")
+                    val_str = pm.group("val").strip().replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+                    try: val = json.loads(val_str)
+                    except: val = val_str
+                    params[key] = val
+                params["tool"] = tool_name
+                out.append((m.start(), m.end(), params))
                 covered.append((m.start(), m.end()))
-            except Exception:
-                pass
+            except Exception: pass
 
         for m in re.finditer(r"\{[^{}]*\"tool\"\s*:\s*\"[^\"]+\"[^{}]*\}", text, re.DOTALL):
             if overlaps(m.start(), m.end()):
