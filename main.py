@@ -3513,7 +3513,7 @@ class AIWorker(QThread):
                 "Authorization": f"Bearer {API_KEY}",
             }
             data = {
-                "model": "gpt-4o-mini",
+                "model": "stepfun/step-3.5-flash:free",
                 "messages": self.messages,
                 "max_tokens": 1000
             }
